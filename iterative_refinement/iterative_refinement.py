@@ -1,5 +1,5 @@
+from iterative_refinement.customWiki import CustomWikipediaAPI
 from langchain_community.chat_models import ChatOllama
-from rag.customWiki import CustomWikipediaAPI
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import GoogleSearchAPIWrapper
 
