@@ -1,0 +1,71 @@
+from utils.data_loader import read_all_json_files, save_to_file
+from iterative_refinement.prompt_templates import prompt1, prompt2, prompt3, prompt4, prompt5 
+from iterative_refinement.iterative_refinement import (
+    retrieve_info,
+    refine_context,
+    evaluate_context,
+    generate_feedback,
+    check_feedback
+)
+
+# Load environment variables (API keys)
+from dotenv import load_dotenv
+load_dotenv()
+
+# Define paths for input and output
+cultural_keywords_path = 'cultural_keyword/keywords_0810/target'
+output_path = 'results/test'
+
+# Load all data from the input directory
+all_country_data = read_all_json_files(cultural_keywords_path)
+
+# Process each cultural noun in the dataset
+for country, data in all_country_data.items():
+    for category, items in data.items():
+        for cultural_noun in items:
+            print(f"Processing '{cultural_noun}' in category '{category}' for country '{country}'...")
+
+            # Step 1: Retrieve information using Wikipedia and Google
+            wikisearch_context, googlesearch_context = retrieve_info(cultural_noun)
+
+            # Step 2: Refine the context based on the retrieved information
+            context = refine_context(
+                cultural_noun=cultural_noun,
+                category=category,
+                information=wikisearch_context + googlesearch_context,
+                context="",  # Initially, the context is empty
+                feedback=""  # No feedback at the start
+            )
+
+            # Step 3: Evaluate the refined context
+            score = evaluate_context(cultural_noun, category, context)
+
+            # Step 4: Generate feedback if refinement is insufficient
+            refine_counter = 0
+            while check_feedback(score, refine_counter) == "insufficient":
+                feedback = generate_feedback(cultural_noun, category, context, score)
+                context = refine_context(
+                    cultural_noun=cultural_noun,
+                    category=category,
+                    information=wikisearch_context + googlesearch_context,
+                    context=context,
+                    feedback=feedback
+                )
+                score = evaluate_context(cultural_noun, category, context)
+                refine_counter += 1
+
+                if refine_counter >= 5:  # Prevent infinite loops
+                    print(f"Max refinement attempts reached for '{cultural_noun}'.")
+                    break
+
+            # Step 5: Save the results
+            result = {
+                "cultural_noun": cultural_noun,
+                "category": category,
+                "country": country,
+                "context": context,
+                "score": score,
+                "refinement_attempts": refine_counter
+            }
+            save_to_file(result, f"{output_path}/{country}_results.jsonl")
+            print(f"Saved results for '{cultural_noun}'.")
