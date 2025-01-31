@@ -29,7 +29,6 @@ class GraphState(TypedDict):
 
 # Import necessary LangChain modules
 
-from langchain_openai import OpenAI
 from langchain_community.chat_models import ChatOllama
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from tqdm import tqdm

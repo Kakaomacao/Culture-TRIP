@@ -2,6 +2,8 @@ from iterative_refinement.customWiki import CustomWikipediaAPI
 from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import GoogleSearchAPIWrapper
+from langchain_core.output_parsers import StrOutputParser
+from iterative_refinement.prompt_templates import prompt1, prompt2, prompt3, prompt4, prompt5
 
 # Initialize the LLM
 llm = ChatOllama(model="llama3:70b")
@@ -9,6 +11,13 @@ llm = ChatOllama(model="llama3:70b")
 # Initialize search tools for Wikipedia and Google
 wsearch = WikipediaQueryRun(api_wrapper=CustomWikipediaAPI())
 gsearch = GoogleSearchAPIWrapper()
+
+
+llm_chain1 = prompt1 | llm | StrOutputParser()
+llm_chain2 = prompt2 | llm | StrOutputParser()
+llm_chain3 = prompt3 | llm | StrOutputParser()
+llm_chain4 = prompt4 | llm | StrOutputParser()
+llm_chain5 = prompt5 | llm | StrOutputParser()
 
 # ---------------------------------------------------------
 # Search functions

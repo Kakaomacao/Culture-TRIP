@@ -1,71 +1,85 @@
-from utils.data_loader import read_all_json_files, save_to_file
-from iterative_refinement.prompt_templates import prompt1, prompt2, prompt3, prompt4, prompt5 
-from iterative_refinement.iterative_refinement import (
-    retrieve_info,
-    refine_context,
-    evaluate_context,
-    generate_feedback,
-    check_feedback
-)
+import json
+from tqdm import tqdm
+from langgraph.checkpoint.memory import MemorySaver
+from utils.data_loader import read_all_json_files, get_prompts_from_directory, generate_sentences_from_all_data
+from utils.graph_workflow import setup_workflow, app_invoke
 
 # Load environment variables (API keys)
 from dotenv import load_dotenv
 load_dotenv()
 
+categories = [
+    "architecture",
+    "city(landmark)",
+    "clothing",
+    "dance music",
+    "food and drink",
+    "religion and festival",
+    "utensils and tools",
+    "visual arts" 
+]
+
+category_file_name = [
+    "architecture.txt",
+    "city_landmark.txt",
+    "clothing.txt",
+    "dance_music.txt",
+    "food_drink.txt",
+    "religion_festival.txt",
+    "utensil_tool.txt",
+    "visual_arts.txt"
+]
+
+# TODO: Get path by user input(passing arguments)
 # Define paths for input and output
 cultural_keywords_path = 'cultural_keyword/keywords_0810/target'
+prompts_directory = 'sentence_classification/prompts'
 output_path = 'results/test'
 
 # Load all data from the input directory
 all_country_data = read_all_json_files(cultural_keywords_path)
+category_prompts = get_prompts_from_directory(prompts_directory, categories, category_file_name)
+all_sentences = generate_sentences_from_all_data(all_country_data, category_prompts)
 
-# Process each cultural noun in the dataset
-for country, data in all_country_data.items():
-    for category, items in data.items():
-        for cultural_noun in items:
-            print(f"Processing '{cultural_noun}' in category '{category}' for country '{country}'...")
+# Setup the workflow
+workflow = setup_workflow()
+memory = MemorySaver()
+app = workflow.compile(checkpointer=memory)
 
-            # Step 1: Retrieve information using Wikipedia and Google
-            wikisearch_context, googlesearch_context = retrieve_info(cultural_noun)
+# Process all generated sentences through the workflow
+results = []
+batch_size = 13
+for sentence in tqdm(all_sentences, desc="Processing", unit="item"):
+    
+    cultural_noun = sentence["cultural_noun"]
+    category = sentence["category"]
+    prompts = sentence["prompts"]
 
-            # Step 2: Refine the context based on the retrieved information
-            context = refine_context(
-                cultural_noun=cultural_noun,
-                category=category,
-                information=wikisearch_context + googlesearch_context,
-                context="",  # Initially, the context is empty
-                feedback=""  # No feedback at the start
-            )
+    country = sentence["country"]
+    
+    score, history, counter = app_invoke(cultural_noun, category, prompts, country, app)
 
-            # Step 3: Evaluate the refined context
-            score = evaluate_context(cultural_noun, category, context)
+    result_entry= {
+        "score": score,
+        "score_history": history,
+        "refine_counter": counter,
+        "metadata": {
+            'country': country,
+            'category': category,
+            'cultural_noun': cultural_noun
+        }
+    }
+    results.append(result_entry)
+    
+    with open(output_path+'/score_with_counter.jsonl', 'a') as file:
+        file.write(json.dumps(result_entry) + '\n')
+    
+    for i in range(0, len(prompts), batch_size):
+        if (len(prompts) - i) <= batch_size:
+            batch_prompts = prompts[i:]
+            current_batch = len(prompts) - i
+        else:
+            batch_prompts = prompts[i:i + batch_size]
+            current_batch = batch_size
 
-            # Step 4: Generate feedback if refinement is insufficient
-            refine_counter = 0
-            while check_feedback(score, refine_counter) == "insufficient":
-                feedback = generate_feedback(cultural_noun, category, context, score)
-                context = refine_context(
-                    cultural_noun=cultural_noun,
-                    category=category,
-                    information=wikisearch_context + googlesearch_context,
-                    context=context,
-                    feedback=feedback
-                )
-                score = evaluate_context(cultural_noun, category, context)
-                refine_counter += 1
-
-                if refine_counter >= 5:  # Prevent infinite loops
-                    print(f"Max refinement attempts reached for '{cultural_noun}'.")
-                    break
-
-            # Step 5: Save the results
-            result = {
-                "cultural_noun": cultural_noun,
-                "category": category,
-                "country": country,
-                "context": context,
-                "score": score,
-                "refinement_attempts": refine_counter
-            }
-            save_to_file(result, f"{output_path}/{country}_results.jsonl")
-            print(f"Saved results for '{cultural_noun}'.")
+print(f"\nTotal inputs generated: {len(all_sentences)}")

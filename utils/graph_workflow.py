@@ -1,3 +1,5 @@
+import os
+import json
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from utils.data_loader import cultural_noun_load
@@ -45,3 +47,34 @@ def setup_workflow():
 
     workflow.set_entry_point("Load cultural nouns")
     return workflow
+
+def app_invoke(cultural_noun, category, prompts, country, app):
+    global output_path
+    
+    inputs = {
+        "cultural_noun": cultural_noun,
+        "category": category,
+        "prompts": prompts
+    }
+    print(f'{category} : {cultural_noun} of {country}')
+    output = app.invoke(inputs, config={"configurable": {"thread_id": 1111}, "recursion_limit": 100})
+    output_json = json.dumps(output)
+    
+    # Check directory
+    directory_path = os.path.join(output_path, country, category)
+    os.makedirs(directory_path, exist_ok=True)
+    
+    output_data = json.loads(output_json)
+    output_prompts = output_data["augmented_prompt"]
+
+    file_name = f"{country}_{category}_{cultural_noun}.txt"
+    file_path = os.path.join(directory_path, file_name)
+    with open(file_path, 'a', encoding='utf-8') as file:
+        for prompt in output_prompts:
+            try:
+                file.write(prompt + "\n")
+            except:
+                print(f"ERROR : {cultural_noun} // {prompt}")
+                continue
+
+    return output_data["score"], output_data['score_history'], output_data["refine_recur_counter"]

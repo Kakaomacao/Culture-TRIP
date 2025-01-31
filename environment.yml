@@ -6,7 +6,8 @@ dependencies:
   - python=3.11
   - pip
   - pip:
-      - python-dotenv
       - langchain_community
       - langchain_core
       - langgraph
+      - python-dotenv
+      - tqdm
