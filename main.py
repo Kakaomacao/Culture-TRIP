@@ -2,7 +2,7 @@ import json
 from tqdm import tqdm
 from langgraph.checkpoint.memory import MemorySaver
 from utils.data_loader import read_all_json_files, get_prompts_from_directory, generate_sentences_from_all_data
-from utils.graph_workflow import setup_workflow, app_invoke
+from utils.graph_workflow import setup_workflow, app_invoke, batch_size
 
 # Load environment variables (API keys)
 from dotenv import load_dotenv
@@ -48,7 +48,6 @@ app = workflow.compile(checkpointer=memory)
 
 # Process all generated sentences through the workflow
 results = []
-batch_size = 13
 for sentence in tqdm(all_sentences, desc="Processing", unit="item"):
     
     cultural_noun = sentence["cultural_noun"]

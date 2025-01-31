@@ -1,15 +1,29 @@
 import re
 import json
 from time import sleep
+from typing import TypedDict
 from langchain_community.chat_models import ChatOllama
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import GoogleSearchAPIWrapper
 from langchain_core.output_parsers import StrOutputParser
 
-from utils.graph_workflow import GraphState
 from iterative_refinement.customWiki import CustomWikipediaAPI
 from iterative_refinement.prompt_templates import prompt1, prompt2, prompt3, prompt4, prompt5
-from main import batch_size
+
+batch_size = 13
+
+class GraphState(TypedDict):
+    cultural_noun: str
+    category: str
+    prompts: list[str]
+    wikisearch_context: str
+    googlesearch_context: str
+    context: str
+    score_history: dict
+    score: dict
+    feedback: str
+    augmented_prompt: list[str]
+    refine_recur_counter: int
 
 # Initialize the LLM
 llm = ChatOllama(model="llama3:70b")

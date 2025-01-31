@@ -1,21 +1,8 @@
 import os
 import json
-from typing import TypedDict
 from langgraph.graph import StateGraph, END
-from iterative_refinement.iterative_refinement import cultural_noun_load, retrieve_info, refiner, evaluator, feedbacker, keyword_prompt, llm_augment_prompt, check_feedback
 
-class GraphState(TypedDict):
-    cultural_noun: str
-    category: str
-    prompts: list[str]
-    wikisearch_context: str
-    googlesearch_context: str
-    context: str
-    score_history: dict
-    score: dict
-    feedback: str
-    augmented_prompt: list[str]
-    refine_recur_counter: int
+from iterative_refinement.iterative_refinement import GraphState, cultural_noun_load, retrieve_info, refiner, evaluator, feedbacker, keyword_prompt, llm_augment_prompt, check_feedback
 
 def setup_workflow():
     """Set up the workflow for the Culture-TRIP"""
