@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "Yoruba Architecture",
+        "Igbo Architecture",
+        "Hausa Architecture"
+    ],
+    "city(landmark)": [
+        "lagos(lekki conservation centre)",
+        "lagos(tinubu square)",
+        "abuja(aso rock)",
+        "lagos(the cathedral church of christ)",
+        "zaria(kashim ibrahim library)"
+    ],
+    "clothing": [
+        "agbada",
+        "dashiki",
+        "shweshwe",
+        "isiagu"
+    ],
+    "dance music": [
+        "atilogwu",
+        "ekombi dance"
+    ],
+    "visual arts": [
+        "nigerian beadwork"
+    ],
+    "food and drink": [
+        "jollof rice",
+        "egusi soup",
+        "moin moin",
+        "banga rice",
+        "edikang ikong"
+    ],
+    "religion and festival": [
+        "Ibo New Yam Festival",
+        "ogun festival",
+        "ikeji festival"
+    ],
+    "utensils and tools": [
+        "nigerian pestle and mortar",
+        "nigerian pot"
+    ]
+}

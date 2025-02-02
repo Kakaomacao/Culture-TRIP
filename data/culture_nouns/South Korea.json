@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "hanok",
+        "korean pagoda",
+        "korean temple"
+    ],
+    "city(landmark)": [
+        "jeonju(hanok village)",
+        "seoul(gyeongbokgung)",
+        "gyeongju(bulguksa)",
+        "suwon(hwaseong fortress)",
+        "seoul(jongmyo shrine)"
+    ],
+    "clothing": [
+        "hanbok",
+        "jeogori",
+        "durumagi",
+        "dangui"
+    ],
+    "dance music": [
+        "cheoyongmu",
+        "buchaechum"
+    ],
+    "visual arts": [
+        "minhwa"
+    ],
+    "food and drink": [
+        "bingsu",
+        "kimchi",
+        "sundubujjigae",
+        "bibimbap",
+        "tteokbokki"
+    ],
+    "religion and festival": [
+        "chuseok",
+        "seollal",
+        "korean new year"
+    ],
+    "utensils and tools": [
+        "gamasot",
+        "hangari"
+    ]
+}

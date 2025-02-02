@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "pakistani buddhist architecture",
+        "pakistani indo-islamic architecture",
+        "pakistani mughal architecture"
+    ],
+    "city(landmark)": [
+        "lahore(badshahi mosque)",
+        "karachi(mazar-e-quaid)",
+        "islamabad(faisal mosque)",
+        "multan(shrine of bahauddin zakariya)",
+        "hyderabad(pakka qila)"
+    ],
+    "clothing": [
+        "sherwani",
+        "gharara",
+        "shalwar kameez",
+        "lehenga"
+    ],
+    "dance music": [
+        "khattak dance",
+        "jhumair"
+    ],
+    "visual arts": [
+        "truck art"
+    ],
+    "food and drink": [
+        "biryani",
+        "nihari",
+        "gulab jamun",
+        "kheer",
+        "gol gappa"
+    ],
+    "religion and festival": [
+        "vaisakhi",
+        "eid al-fitr",
+        "eid al-adha"
+    ],
+    "utensils and tools": [
+        "karahi",
+        "degchi"
+    ]
+}

@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "indian stupa",
+        "Mughal architecture",
+        "Gupta architecture"
+    ],
+    "city(landmark)": [
+        "Agra(taj mahal)",
+        "Delhi(Red Fort)",
+        "Jaipur(Amber Fort)",
+        "Allahabad(Allahabad Fort)",
+        "Delhi(Qutub Minar)"
+    ],
+    "clothing": [
+        "lehenga",
+        "sari",
+        "shalwar kameez",
+        "dhoti"
+    ],
+    "dance music": [
+        "manipuri dance",
+        "bharatnatyam"
+    ],
+    "visual arts": [
+        "Mughal Painting"
+    ],
+    "food and drink": [
+        "paratha",
+        "biryani",
+        "vada pav",
+        "aloo gobi",
+        "saag"
+    ],
+    "religion and festival": [
+        "Diwali",
+        "Holi",
+        "Durga Puja"
+    ],
+    "utensils and tools": [
+        "tawa",
+        "masala dabba"
+    ]
+}

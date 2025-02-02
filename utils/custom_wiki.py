@@ -1,7 +1,7 @@
 from langchain_community.utilities import WikipediaAPIWrapper
 
 class CustomWikipediaAPI(WikipediaAPIWrapper):
-    top_k_results: int = 1 # 이 부분으로 찾아오는 개수 조절
+    top_k_results: int = 1 
 
     def run(self, query: str) -> str:
         """Run Wikipedia search and get page summaries."""

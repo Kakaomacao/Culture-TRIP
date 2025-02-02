@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "colonial revival",
+        "mission revival",
+        "american craftsman"
+    ],
+    "city(landmark)": [
+        "new york city(statue of liberty)",
+        "san francisco(golden gate bridge)",
+        "washington(the white house)",
+        "chicago(willis tower)",
+        "los angeles(hollywood sign)"
+    ],
+    "clothing": [
+        "cowboy hat",
+        "denim overalls",
+        "buffalo check shirt",
+        "quilted vest"
+    ],
+    "dance music": [
+        "bluegrass",
+        "cotton-eyed joe"
+    ],
+    "visual arts": [
+        "american folk art"
+    ],
+    "food and drink": [
+        "apple pie",
+        "buffalo wings",
+        "clam chowder",
+        "barbecue ribs",
+        "cornbread"
+    ],
+    "religion and festival": [
+        "thanksgiving",
+        "independence day",
+        "memorial day"
+    ],
+    "utensils and tools": [
+        "cast iron skillet",
+        "butter dish"
+    ]
+}

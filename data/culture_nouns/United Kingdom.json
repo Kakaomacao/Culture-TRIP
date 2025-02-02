@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "british gothic",
+        "victorian style",
+        "georgian style"
+    ],
+    "city(landmark)": [
+        "london(buckingham palace)",
+        "edinburgh(arthur's seat)",
+        "manchester(john rylands library)",
+        "birmingham(victoria square)",
+        "york(clifford's tower)"
+    ],
+    "clothing": [
+        "kilt",
+        "tweed jacket",
+        "beefeater uniform",
+        "morning suit"
+    ],
+    "dance music": [
+        "hornpipe",
+        "morris dance"
+    ],
+    "visual arts": [
+        "british watercolor painting"
+    ],
+    "food and drink": [
+        "trifle",
+        "shepherds pie",
+        "yorkshire pudding",
+        "sunday roast",
+        "full breakfast"
+    ],
+    "religion and festival": [
+        "guy fawkes night",
+        "british boxing day",
+        "saint georges day"
+    ],
+    "utensils and tools": [
+        "apurtle",
+        "british rolling pin"
+    ]
+}

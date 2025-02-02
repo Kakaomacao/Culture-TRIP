@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "tulou",
+        "siheyuan",
+        "chinese pagoda"
+    ],
+    "city(landmark)": [
+        "dunhuang(Mogao Caves)",
+        "xian(Terracotta Army)",
+        "beijing(Forbidden City)",
+        "beijing(Temple of Heaven)",
+        "shanghai(Oriental Pearl Tower)"
+    ],
+    "clothing": [
+        "tangzhuang",
+        "zhongshan suit",
+        "qipao",
+        "hanfu"
+    ],
+    "dance music": [
+        "lion dance",
+        "yangge"
+    ],
+    "visual arts": [
+        "jade art"
+    ],
+    "food and drink": [
+        "mooncake",
+        "peking duck",
+        "wonton",
+        "xiaolongbao",
+        "chinese hot pot"
+    ],
+    "religion and festival": [
+        "chinese new year",
+        "chinese mid-autumn festival",
+        "qingming"
+    ],
+    "utensils and tools": [
+        "chinese wok",
+        "chinese bamboo steamer"
+    ]
+}

@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "german romanesque",
+        "german gothic",
+        "german baroque"
+    ],
+    "city(landmark)": [
+        "berlin(Brandenburger Tor)",
+        "munich(Munich's Marienplatz)",
+        "cologne(Cologne Cathedral)",
+        "bavaria(Neuschwanstein Castle)",
+        "heidelberg(Heidelberg Castle)"
+    ],
+    "clothing": [
+        "lederhosen",
+        "tracht",
+        "dirndl",
+        "schürze"
+    ],
+    "dance music": [
+        "Zwiefacher",
+        "Schuhplattler"
+    ],
+    "visual arts": [
+        "deutsch renaissance"
+    ],
+    "food and drink": [
+        "mulled wine",
+        "currywurst",
+        "knodel",
+        "bratwurst",
+        "sauerkraut"
+    ],
+    "religion and festival": [
+        "nikolaustag",
+        "Weihnachtsmärkte",
+        "Oktoberfest"
+    ],
+    "utensils and tools": [
+        "Bratpfanne",
+        "rouladenklammer"
+    ]
+}

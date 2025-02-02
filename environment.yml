@@ -9,6 +9,7 @@ dependencies:
       - langchain_community
       - langchain_core
       - langgraph
+      - wikipedia
+      - google-api-python-client
       - python-dotenv
       - tqdm
-      - wikipedia-api

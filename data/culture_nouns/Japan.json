@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "shinto architecture",
+        "torii",
+        "edo architecture"
+    ],
+    "city(landmark)": [
+        "tokyo(Tokyo Tower)",
+        "shizuoka(Mount Fuji)",
+        "kyoto(Kinkaku-ji)",
+        "osaka(Osaka Castle)",
+        "matsumoto(Matsumoto Castle)"
+    ],
+    "clothing": [
+        "hanten",
+        "haori",
+        "hakama",
+        "yukata"
+    ],
+    "dance music": [
+        "kabuki",
+        "noh mai"
+    ],
+    "visual arts": [
+        "origami"
+    ],
+    "food and drink": [
+        "okonomiyaki",
+        "tempura",
+        "wagashi",
+        "gyudon",
+        "gyoza"
+    ],
+    "religion and festival": [
+        "Sapporo Snow Festival",
+        "gion matsuri",
+        "sanda matsuri"
+    ],
+    "utensils and tools": [
+        "Sashimi bōchō",
+        "Takoyaki Pan"
+    ]
+}

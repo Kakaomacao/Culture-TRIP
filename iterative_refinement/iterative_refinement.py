@@ -7,18 +7,18 @@ from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import GoogleSearchAPIWrapper
 from langchain_core.output_parsers import StrOutputParser
 
-from iterative_refinement.customWiki import CustomWikipediaAPI
+from utils.custom_wiki import CustomWikipediaAPI
 from iterative_refinement.prompt_templates import prompt1, prompt2, prompt3, prompt4, prompt5
 
-batch_size = 13
+# Load environment variables (API keys)
+from dotenv import load_dotenv
+load_dotenv()
 
 class GraphState(TypedDict):
-    cultural_noun: str
-    category: str
+    culture_noun: str
     prompts: list[str]
     wikisearch_context: str
     googlesearch_context: str
-    context: str
     score_history: dict
     score: dict
     feedback: str
@@ -29,9 +29,8 @@ class GraphState(TypedDict):
 llm = ChatOllama(model="llama3:70b")
 
 # Initialize search tools for Wikipedia and Google
-wsearch = WikipediaQueryRun(api_wrapper=CustomWikipediaAPI())
-gsearch = GoogleSearchAPIWrapper()
-
+wiki_search = WikipediaQueryRun(api_wrapper=CustomWikipediaAPI())
+google_search = GoogleSearchAPIWrapper()
 
 llm_chain1 = prompt1 | llm | StrOutputParser()
 llm_chain2 = prompt2 | llm | StrOutputParser()
@@ -46,12 +45,12 @@ GRPAH_RESULT_SHOW = True
 # Load culture nouns
 # ---------------------------------------------------------
 
-def cultural_noun_load(state: GraphState) -> GraphState:
+def culture_noun_load(state: GraphState) -> GraphState:
     state['augmented_prompt'] = ''
     
     if GRPAH_RESULT_SHOW:
         print("\n\n### GRAPH START ###")
-        print("keyword:", state['cultural_noun'])
+        print("culture_noun:", state['culture_noun'])
     
     score_history = {
         'Clarity': [],
@@ -63,25 +62,18 @@ def cultural_noun_load(state: GraphState) -> GraphState:
     }
     
     sleep(GRAPH_SLEEP_TIME)    
-    return GraphState(cultural_noun = state['cultural_noun'], score_history=score_history, refine_recur_counter = 0, aug_recur_counter = 0)
+    return GraphState(culture_noun = state['culture_noun'], score_history=score_history, refine_recur_counter = 0, aug_recur_counter = 0)
 
 # ---------------------------------------------------------
 # Retrieve information
 # ---------------------------------------------------------
 
-def retrieve_info(cultural_noun):
-    """
-    Perform searches on Wikipedia and Google for the given cultural noun.
+def retrieve_info(state: GraphState) -> GraphState:
+    culture_noun = state['culture_noun']
+    wikisearch_context = wiki_search.run(culture_noun)
+    googlesearch_context = google_search.run("What is " + culture_noun)
 
-    Args:
-        cultural_noun (str): The cultural noun to search for.
-
-    Returns:
-        tuple: A tuple containing the Wikipedia search context and Google search context.
-    """
-    wikisearch_context = wsearch.run(cultural_noun)
-    googlesearch_context = gsearch.run("What is " + cultural_noun)
-    return wikisearch_context, googlesearch_context
+    return GraphState(wikisearch_context = wikisearch_context, googlesearch_context=googlesearch_context)
 
 # ---------------------------------------------------------
 # Iterative refinement
@@ -89,13 +81,10 @@ def retrieve_info(cultural_noun):
 
 def refiner(state: GraphState) -> GraphState:
     information = state["wikisearch_context"] + '\n' + state["googlesearch_context"]
-    feedback = state["feedback"]
     
     # refine 모델
-        
     response = llm_chain1.invoke({
-        "cultural_noun":state["cultural_noun"],
-        "category":state["category"],
+        "culture_noun":state["culture_noun"],
         "information":information,
         "context":state["context"],
         "feedback": state["feedback"], 
@@ -110,14 +99,11 @@ def refiner(state: GraphState) -> GraphState:
 
 def evaluator(state: GraphState) -> GraphState:
     # 점수 채점 모델
-    
     response = llm_chain2.invoke({
-        "cultural_noun":state["cultural_noun"],
-        "category":state["category"],
+        "culture_noun":state["culture_noun"],
         "context":state["context"],
     })
 
-    
     print("\n\n### EVALUATOR ###") if GRPAH_RESULT_SHOW else None
 
     # 정규 표현식을 사용하여 JSON 부분 추출
@@ -141,16 +127,11 @@ def evaluator(state: GraphState) -> GraphState:
     return GraphState(score=score, score_history=score_history)
 
 def feedbacker(state: GraphState) -> GraphState:
-    context = state["context"]
-    keyword = state["cultural_noun"]
-    score = state["score"]
     counter = state["refine_recur_counter"] + 1
     
     # 피드백 생성 모델
-    
     response = llm_chain3.invoke({
-        "cultural_noun":state["cultural_noun"],
-        "category":state["category"],
+        "culture_noun":state["culture_noun"],
         "context":state["context"],
         "score":state["score"]
     })
@@ -174,94 +155,3 @@ def check_feedback(state: GraphState) -> GraphState:
         return "sufficient"
     else:
         return "insufficient"
-
-# ---------------------------------------------------------
-# Augmentation
-# ---------------------------------------------------------
-
-def keyword_prompt(state: GraphState) -> GraphState:
-    prompts = state["prompts"]
-    cultural_noun = state["cultural_noun"]
-    formatted_prompts = []
-    
-    for prompt in prompts:
-        # 중괄호 안의 문자열을 추출하기 위한 정규 표현식
-        matches = re.findall(r'\{(.*?)\}', prompt)
-        
-        # 각 문자열을 해당하는 포맷 데이터로 대체
-        for match in matches:
-            prompt = prompt.replace(f'{{{match}}}', cultural_noun)
-
-        formatted_prompts.append(prompt)
-    
-        
-    if GRPAH_RESULT_SHOW:
-        print("\n\n### ADD KEYWORD ###")
-        print(formatted_prompts)    
-    
-    return GraphState(prompts=formatted_prompts)
-
-def llm_augment_prompt(state: GraphState) -> GraphState:    
-    pass
-    print("\n\n### AUGMENTATION ###") if GRPAH_RESULT_SHOW else None
-
-    prompts = state["prompts"]
-    total_aug = []
-    
-    for i in range(0, len(prompts), batch_size):
-        aug_recur_counter = 0
-        aug_fail = True
-        
-        if (len(prompts) - i) <= batch_size:
-            # 마지막 루프 처리
-            batch_prompts = prompts[i:]
-            current_batch = len(prompts) - i
-        else:
-            batch_prompts = prompts[i:i + batch_size]
-            current_batch = batch_size
-        
-        while aug_recur_counter < 5 and aug_fail:
-            aug_recur_counter += 1
-            
-            response = llm_chain5.invoke({
-                "cultural_noun":state["cultural_noun"], 
-                "context":state["context"], # wikisearch_context로 바꿔서 결과 받고 이미지 생성
-                "prompts":batch_prompts
-            })
-            
-            # 정규 표현식을 사용하여 리스트 부분 추출
-            list_match = re.search(r'\[.*?\]', response, re.DOTALL)
-            
-            if list_match:
-                try:
-                    list_str = list_match.group(0)
-                    augmented_prompt = json.loads(list_str)
-                    
-                    aug_fail = False if len(augmented_prompt) == current_batch else True
-                    
-                    if GRPAH_RESULT_SHOW:
-                        print(f'augmented_prompt : {augmented_prompt}')
-                        print('증강 개수:', len(augmented_prompt), ', 현재 배치:', current_batch)
-                except:
-                    augmented_prompt = []
-                    print('Augmented prompt not found')
-            else:
-                print(f'response ==> {response}')
-                print(f'list_match ==> {list_match}')
-                augmented_prompt = []
-                print("List data not found")
-                
-                with open('error.txt', 'a') as error_file:
-                    error_file.write('------------------------\n')
-                    error_file.write(f'response: {response}\n')
-                    error_file.write(f'list_match: {list_match}\n')
-                    error_file.write('------------------------\n')
-        # while 종료
-        
-        total_aug.extend(augmented_prompt)
-        
-    state["wikisearch_context"] = ''
-    state["googlesearch_context"] = ''
-    state["context"] = ''
-
-    return GraphState(augmented_prompt=total_aug)

@@ -1,0 +1,43 @@
+{
+    "architecture": [
+        "mesoamerican architecture",
+        "zacatecas architecture",
+        "traditional adobe architecture"
+    ],
+    "city(landmark)": [
+        "mexico city(palacio de bellas artes)",
+        "mexico city(templo mayor)",
+        "mexico city(castillo de chapultepec)",
+        "san miguel de allende(parroquia de san miguel arcangel)",
+        "guanajuato(teatro juarez)"
+    ],
+    "clothing": [
+        "huipil",
+        "rebozo",
+        "charro outfit",
+        "sarape"
+    ],
+    "dance music": [
+        "jarabe tapatio",
+        "danza de los concheros"
+    ],
+    "visual arts": [
+        "alebrije"
+    ],
+    "food and drink": [
+        "chiles en nogada",
+        "aguachile",
+        "pozole",
+        "carnitas",
+        "barbacoa"
+    ],
+    "religion and festival": [
+        "dia de los muertos",
+        "cinco de mayo",
+        "mexican fiesta de la candelaria"
+    ],
+    "utensils and tools": [
+        "comal",
+        "molcajete"
+    ]
+}
