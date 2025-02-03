@@ -4,11 +4,7 @@ This is the official repository for our NAACL 2025 paper **Culture-TRIP: Cultura
 
 [[Paper]]() | [[Project]](https://shane3606.github.io/Culture-TRIP/)
 
-## Environment Setup
-
-The project environment can be set up using the `environment.yaml` file.
-
-### Create and Activate Conda Environment
+## Installation
 
 ```bash
 git clone https://github.com/Kakaomacao/Culture-TRIP.git
@@ -31,6 +27,14 @@ conda activate culture-trip
 
 ```bash
 python main.py --prompt "Describe a traditional festival" --culture_noun "Diwali" --score_threshold 40 --is_intermediate_result_show True
+```
+
+## Citation
+
+Consider citing as below if you find this repository helpful to your project:
+
+```bash
+
 ```
 
 ## Acknowldement
