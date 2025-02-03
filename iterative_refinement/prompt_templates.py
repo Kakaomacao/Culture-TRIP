@@ -1,7 +1,7 @@
 from langchain_core.prompts import PromptTemplate
 
 # Define various prompt templates for writing, evaluating, refining, and augmenting prompts
-# Template1: Generate detailed sentences for culture nouns
+# refine_prompt_template: Generate detailed sentences for culture nouns
 refine_prompt_template = """### Instruction:
 Please refine the BASE PROMPT by referring to the INFORMATION and FEEDBACK.
 The REFINED PROMPT should be written so that someone unfamiliar with the CULTURE NOUN can read it and draw a picture of it.
@@ -32,7 +32,7 @@ ANSWER:
 refine_prompt = PromptTemplate.from_template(refine_prompt_template)
 
 
-# Template2: Evaluate prompts based on five criteria
+# scoring_prompt_template: Evaluate prompts based on five criteria
 scoring_prompt_template = """### Instruction:
 Please evalutate base PROMPT with 5 criteria (Clarity, Detail, Context, Purpose, Comparable object).
 - Clarity: How clear and easy to understand the prompt is, and whether it uses only the information necessary to describe the CULTURE NOUN.
@@ -65,7 +65,7 @@ ANSWER:
 scoring_prompt = PromptTemplate.from_template(scoring_prompt_template)
 
 
-# Template3: Provide feedback to improve prompt scores
+# feedback_prompt_template: Provide feedback to improve prompt scores
 feedback_prompt_template = """### Instruction:
 Review the items of SCORE and provide feedback on how to improve each item's score, specifically focusing on the modification of REFINED PROMPT about CULTURE NOUN.
 

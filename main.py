@@ -1,7 +1,7 @@
 import argparse
 from iterative_refinement.graph_workflow import culture_trip
 
-# Example
+# [Example]
 # python main.py --prompt "Ao dai are scattered on the floor after a long day." --culture_noun "ao dai"
 
 def main():
