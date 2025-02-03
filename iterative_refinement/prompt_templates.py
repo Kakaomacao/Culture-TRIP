@@ -3,12 +3,13 @@ from langchain_core.prompts import PromptTemplate
 # Define various prompt templates for writing, evaluating, refining, and augmenting prompts
 # Template1: Generate detailed sentences for culture nouns
 refine_prompt_template = """### Instruction:
-Please revise BASE PROMPT by refferring to the INFORMATION as noted in the FEEDBACK.
-I will present BASE PROMPT to someone unfamiliar with the CULTURE NOUN, so they can draw a picture of the CULTURE NOUN just by reading the base PROMPT.
+Please refine the BASE PROMPT by referring to the INFORMATION and FEEDBACK.
+The REFINED PROMPT should be written so that someone unfamiliar with the CULTURE NOUN can read it and draw a picture of it.
 
-There may be incorrect information in the INFORMATION, so be cautious and ensure it pertains to the CULTURE NOUN before using it.
+Since the INFORMATION may contain incorrect details, carefully verify that it pertains to the CULTURE NOUN before using it.
 
-If a BASE PROMPT cannot accommodate the CULTURE NOUN, allow for slight modifications to ensure all sentences are covered. When adding additional information to a single sentence to provide sufficient detail, expand the original sentence into 3 sentences so that the result is approximately 300 characters long.
+If the BASE PROMPT cannot adequately accommodate the CULTURE NOUN, slight modifications are allowed. When adding additional information to a single sentence to provide sufficient detail, expand the original sentence into three sentences. 
+However, the scene depicted in the BASE PROMPT must remain unchanged.
 
 ### TODO:
 CULTURE NOUN:
