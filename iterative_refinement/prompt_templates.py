@@ -2,40 +2,42 @@ from langchain_core.prompts import PromptTemplate
 
 # Define various prompt templates for writing, evaluating, refining, and augmenting prompts
 # Template1: Generate detailed sentences for culture nouns
-template1 = """### Instruction:
-I want you to write 2 ~ 3 detailed sentences with INFORMATION.
-Please revise the CONTEXT content by referring to the INFORMATION as noted in the FEEDBACK.
+refine_prompt_template = """### Instruction:
+Please revise base PROMPT by refferring to the INFORMATION as noted in the FEEDBACK.
+I will present base PROMPT to someone unfamiliar with the CULTURE NOUN, so they can draw a picture of the CULTURE NOUN just by reading the base PROMPT.
+
 There may be incorrect information in the INFORMATION, so be cautious and ensure it pertains to the CULTURE NOUN before using it.
+
+If a base PROMPT cannot accommodate the CULTURE NOUN, allow for slight modifications to ensure all sentences are covered. When adding additional information to a single sentence to provide sufficient detail, expand the original sentence into 3 sentences so that the result is approximately 300 characters long.
 
 ### TODO:
 CULTURE NOUN:
-{cultural_noun}
+{culture_noun}
 
 INFORMATION:
 {information}
 
-CONTEXT:
-{context}
+PROMPT:
+{prompt}
 
 FEEDBACK:
 {feedback}
 
-Answer:
+ANSWER:
 """
-prompt1 = PromptTemplate.from_template(template1)
+refine_prompt = PromptTemplate.from_template(refine_prompt_template)
 
 
 # Template2: Evaluate prompts based on five criteria
-template2 = """### Instruction:
-Please evalutate CONTEXT with 5 criteria (Clarity, Detail, Context, Purpose, Comparable object).
-Clarity: How clear and easy to understand the prompt is, and whether it uses only the information necessary to describe the CULTURE NOUN.
-Visual detail: Whether the prompt provides a sufficient amount of visual information, such as colors, shapes, etc.
-Background: Whether the historical or temporal background information provided in the prompt is appropriate.
-Purpose: Whether the description of the intended use or the users of the subject in the prompt is appropriate.
-Comparable object: How well the prompt compares to existing well-known or popular examples.
-Each criteria can not exceed score 10.
-I want each score of criteria and total score.
-Please answer with the format below.
+scoring_prompt_template = """### Instruction:
+Please evalutate base PROMPT with 5 criteria (Clarity, Detail, Context, Purpose, Comparable object).
+- Clarity: How clear and easy to understand the prompt is, and whether it uses only the information necessary to describe the CULTURE NOUN.
+- Visual detail: Whether the prompt provides a sufficient amount of visual information, such as colors, shapes, etc.
+- Background: Whether the historical or temporal background information provided in the prompt is appropriate.
+- Purpose: Whether the description of the intended use or the users of the subject in the prompt is appropriate.
+- Comparable object: How well the prompt compares to existing well-known or popular examples.
+Each criterion cannot exceed a score of 10. Please provide each criterion's score and the total score.
+Answer in the following foramt and write only the score, not the description.
 
 ANSWER FORMAT:
 {{   
@@ -49,86 +51,31 @@ ANSWER FORMAT:
 
 ### TODO:
 CULTURE NOUN:
-{cultural_noun}
+{culture_noun}
 
-CONTEXT:
-{context}
+PROMPT:
+{prompt}
 
-Answer:
+ANSWER:
 """
-prompt2 = PromptTemplate.from_template(template2)
+scoring_prompt = PromptTemplate.from_template(scoring_prompt_template)
 
 
 # Template3: Provide feedback to improve prompt scores
-template3 = """### Instruction:
-Review the items of SCORE and provide feedback on how to improve each item's score, specifically focusing on the modification of CONTEXT about CULTURE NOUN.
+feedback_prompt_template = """### Instruction:
+Review the items of SCORE and provide feedback on how to improve each item's score, specifically focusing on the modification of REFINED PROMPT about CULTURE NOUN.
 
 ### TODO:
 CULTURE NOUN:
-{cultural_noun}
+{culture_noun}
 
-CONTEXT:
-{context}
+REFINED PROMPT:
+{refined_prompt}
 
 SCORE:
 {score}
 
-Answer:
+ANSWER:
 """
 
-prompt3 = PromptTemplate.from_template(template3)
-
-
-# Template4: Add culture keywords to base prompts
-template4 = """### Instruction:
-In each of the Base Prompts, there is a mask coverd with {{ }} and replace them with CULTURE NOUN including {{}}.
-
-Please answer in the FORMAT below. I want to have an ANSWER in format of list.
-ANSWER FORMAT:
-["sentence", "sentence", ...]
-
-### TODO:
-:
-{cultural_noun}
-
-Base Prompts:
-{prompts}
-
-Answer:
-"""
-
-prompt4 = PromptTemplate.from_template(template4)
-
-
-# Template5 : Augmenting the prompt
-template5 = """### Instruction:
-Use all the information from the CONTEXT to add adtional information to each sentence of the Base prompts. Explain it so well that someone who doesn't know the CULTURE NOUN can draw a picture of the CULTURE NOUN just by reading the Base prompts. 
-
-Refer to the following criteria:
-Clarity: How clear and easy to understand the prompt is, and whether it uses only the information necessary to describe the CULTURE NOUN.
-Visual detail: Whether the prompt provides a sufficient amount of visual information, such as colors, shapes, etc.
-Background: Whether the historical or temporal background information provided in the prompt is appropriate.
-Purpose: Whether the description of the intended use or the users of the subject in the prompt is appropriate.
-Comparable object: How well the prompt compares to existing well-known or popular examples.
-
-If a Base prompt cannot accommodate the CULTURE NOUN, allow for slight modifications to ensure all sentences are covered. 
-When adding additional information to a single sentence to provide sufficient detail, expand the original 1 sentence into 3 sentences so that the final result is approximately 300 characters long.
-
-Please answer in the FORMAT below. I want to have an ANSWER in format of list.
-ANSWER FORMAT:
-["3 sentences", "3 sentences", ...]
-
-### TODO:
-CULTURE NOUN:
-{cultural_noun}
-
-CONTEXT:
-{context}
-
-Base Prompts:
-{prompts}
-
-Answer:
-"""
-
-prompt5 = PromptTemplate.from_template(template5)
+feedback_prompt = PromptTemplate.from_template(feedback_prompt_template)
