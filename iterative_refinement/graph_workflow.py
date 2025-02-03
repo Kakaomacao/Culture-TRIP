@@ -29,7 +29,7 @@ def setup_workflow():
     workflow.set_entry_point("Load culture nouns")
     return workflow
 
-def culture_trip(culture_noun, prompt, is_intermediate_result_show):
+def culture_trip(culture_noun, prompt, score_threshold, is_intermediate_result_show):
     # Setup the langchain workflow
     workflow = setup_workflow()
     memory = MemorySaver()
@@ -38,12 +38,9 @@ def culture_trip(culture_noun, prompt, is_intermediate_result_show):
     inputs = {
         "culture_noun": culture_noun,
         "prompt": prompt,
+        "score_threshold": score_threshold,
         "is_intermediate_result_show": is_intermediate_result_show
     }
     output = app.invoke(inputs, config={"configurable": {"thread_id": 1111}, "recursion_limit": 100})
-
-    # output_json = json.dumps(output)
-    # output_data = json.loads(output_json)
-    # output_prompts = output_data["refined_prompt"]
 
     return output["refined_prompt"]

@@ -3,12 +3,12 @@ from langchain_core.prompts import PromptTemplate
 # Define various prompt templates for writing, evaluating, refining, and augmenting prompts
 # Template1: Generate detailed sentences for culture nouns
 refine_prompt_template = """### Instruction:
-Please revise base PROMPT by refferring to the INFORMATION as noted in the FEEDBACK.
-I will present base PROMPT to someone unfamiliar with the CULTURE NOUN, so they can draw a picture of the CULTURE NOUN just by reading the base PROMPT.
+Please revise BASE PROMPT by refferring to the INFORMATION as noted in the FEEDBACK.
+I will present BASE PROMPT to someone unfamiliar with the CULTURE NOUN, so they can draw a picture of the CULTURE NOUN just by reading the base PROMPT.
 
 There may be incorrect information in the INFORMATION, so be cautious and ensure it pertains to the CULTURE NOUN before using it.
 
-If a base PROMPT cannot accommodate the CULTURE NOUN, allow for slight modifications to ensure all sentences are covered. When adding additional information to a single sentence to provide sufficient detail, expand the original sentence into 3 sentences so that the result is approximately 300 characters long.
+If a BASE PROMPT cannot accommodate the CULTURE NOUN, allow for slight modifications to ensure all sentences are covered. When adding additional information to a single sentence to provide sufficient detail, expand the original sentence into 3 sentences so that the result is approximately 300 characters long.
 
 ### TODO:
 CULTURE NOUN:
@@ -17,10 +17,13 @@ CULTURE NOUN:
 INFORMATION:
 {information}
 
-PROMPT:
+BASE PROMPT:
 {prompt}
 
-FEEDBACK:
+BEFORE REFINED PROMPT:
+{refined_prompt}
+
+REFINE FEEDBACK:
 {feedback}
 
 ANSWER:
@@ -53,8 +56,8 @@ ANSWER FORMAT:
 CULTURE NOUN:
 {culture_noun}
 
-PROMPT:
-{prompt}
+REFINED PROMPT:
+{refined_prompt}
 
 ANSWER:
 """

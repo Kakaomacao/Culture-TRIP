@@ -23,6 +23,7 @@ class GraphState(TypedDict):
     score_history: dict
     score: dict
     feedback: str
+    score_threshold: int
     refine_recur_counter: int
     is_intermediate_result_show: bool
 
@@ -56,7 +57,7 @@ def culture_noun_load(state: GraphState) -> GraphState:
         'Total_score': []
     }
     
-    return GraphState(culture_noun = state['culture_noun'], score_history=score_history, feedback='', refine_recur_counter = 0, aug_recur_counter = 0)
+    return GraphState(culture_noun = state['culture_noun'], refined_prompt = '', feedback='', score_history=score_history, refine_recur_counter = 0, aug_recur_counter = 0)
 
 # ---------------------------------------------------------
 # Retrieve information
@@ -81,6 +82,7 @@ def refine(state: GraphState) -> GraphState:
         "culture_noun":state["culture_noun"],
         "information":information,
         "prompt":state["prompt"],
+        "refined_prompt":state["refined_prompt"],
         "feedback": state["feedback"], 
     })
     
@@ -93,7 +95,7 @@ def scoring(state: GraphState) -> GraphState:
     # 점수 채점 모델
     response = scoring_llm.invoke({
         "culture_noun":state["culture_noun"],
-        "prompt":state["prompt"],
+        "refined_prompt":state["refined_prompt"],
     })
 
     print("\n\n### SCORING ###") if state['is_intermediate_result_show'] else None
@@ -133,13 +135,11 @@ def feedback(state: GraphState) -> GraphState:
     return GraphState(feedback=response, refine_recur_counter=counter)
 
 def check_score(state: GraphState) -> GraphState:
-    THRESH = 40
-    
     score = state['score'] # 고민 필요
     total = score["Total_score"]
     counter = state["refine_recur_counter"]
     
-    if total >= THRESH or counter >= 5:
+    if total >= state['score_threshold'] or counter >= 5:
         return "sufficient"
     else:
         return "insufficient"
