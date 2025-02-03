@@ -8,13 +8,12 @@ The project environment can be set up using the `environment.yaml` file.
 
 ### Create and Activate Conda Environment
 ```bash
+git clone https://github.com/Kakaomacao/Culture-TRIP.git
 conda env create -f environment.yaml
 conda activate culture-trip
 ```
 
 ## Usage
-
-The main script is main.py, and it accepts the following arguments:
 
 ### Arguments
 
