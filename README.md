@@ -26,7 +26,7 @@ conda activate culture-trip
 ### Example Usage
 
 ```bash
-python main.py --prompt "Describe a traditional festival" --culture_noun "Diwali" --score_threshold 40 --is_intermediate_result_show True
+python main.py --prompt "Ao dai are scattered on the floor after a long day." --culture_noun "ao dai" --score_threshold 40 --is_intermediate_result_show True
 ```
 
 ## Citation
