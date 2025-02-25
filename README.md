@@ -2,7 +2,7 @@
 
 This is the official repository for our NAACL 2025 paper **Culture-TRIP: Culturally-Aware Text-to-Image Generation with Iterative Prompt Refinement**
 
-[[Paper]]() | [[Project]](https://shane3606.github.io/Culture-TRIP/)
+[[Paper]](https://arxiv.org/abs/2502.16902) | [[Project]](https://shane3606.github.io/Culture-TRIP/)
 
 ## Installation
 
